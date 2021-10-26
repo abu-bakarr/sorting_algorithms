@@ -1,75 +1,39 @@
 #include "sort.h"
 /**
- * insertion_sort_list - is a simple sorting algorithm that builds
- * the final sorted array (or list) one item at a time.
- * Done by Abubakarr
- * @list: List of an array of integers.
- *
- * Return: Void Function
+ * insertion_sort_list - sorts a doubly linked list of integers
+ * in ascending order using the Insertion sort algorithm
+ * @list: list double point
  */
-
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *tempValue = *list, *tempValue1 = tempValue->next;
-	int index = 0, i;
-
-	if (*list == NULL || list == NULL)
-		return;
-	if ((*list)->next == NULL && (*list)->prev == NULL)
-		return;
-	while (tempValue1 != NULL)
-	{
-		if (tempValue->n > tempValue1->n)
-		{
-			tempValue1->prev = tempValue->prev;
-			tempValue->next = tempValue1->next;
-			tempValue->prev = tempValue1;
-			tempValue1->next = tempValue;
-			if (tempValue1->prev == NULL)
-			{
-				if (tempValue->next != NULL)
-					tempValue->next->prev = tempValue;
-				*list = tempValue1;
-			}
-			else if (tempValue->next == NULL && tempValue1->prev != NULL)
-				tempValue1->prev->next = tempValue1;
-			else if (tempValue1->prev != NULL && tempValue->next != NULL)
-			{
-				tempValue->next->prev = tempValue;
-				tempValue1->prev->next = tempValue1;
-			}
-			print_list(*list);
-			tempValue = tempValue1->prev;
-			while (tempValue != NULL)
-			{
-				if (tempValue->n > tempValue1->n)
-				{
-					tempValue1->prev = tempValue->prev;
-					tempValue->next = tempValue1->next;
-					tempValue->prev = tempValue1;
-					tempValue1->next = tempValue;
-					if (tempValue1->prev == NULL)
-					{
-						tempValue->next->prev = tempValue;
-						*list = tempValue1;
-					}
-					else
-					{
-						tempValue->next->prev = tempValue;
-						tempValue1->prev->next = tempValue1;
-					}
-					print_list(*list);
-				}
-				tempValue1 = tempValue;
-				tempValue = tempValue->prev;
-			}
-		}
-		tempValue = *list;
-		index += 1;
-		for (i = 0; index > i; i++)
-		{
-			tempValue = tempValue->next;
-			tempValue1 = tempValue->next;
-		}
-	}
+listint_t *next_node = NULL;
+if (list == NULL || *list == NULL || (*list)->next == NULL)
+{
+return;
+}
+next_node = (*list)->next;
+while (next_node != NULL)
+{
+while (next_node->previous && next_node->n < next_node->previous->n)
+{
+next_node->previous->next = next_node->next;
+if (next_node->next != NULL)
+{
+next_node->next->previous = next_node->previous;
+}
+next_node->next = next_node->previous;
+next_node->previous = next_node->previous->previous;
+next_node->next->previous = next_node;
+if (next_node->previous == NULL)
+{
+*list = next_node;
+}
+else
+{
+next_node->previous->next = next_node;
+}
+print_list(*list);
+}
+next_node = next_node->next;
+}
 }
